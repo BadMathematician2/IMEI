@@ -1,0 +1,20 @@
+{
+    "name": "mykola/imei",
+    "authors": [
+        {
+            "name": "Mykola",
+            "email": "mathematic204chnu@gmail.com"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "\\IMEI\\IMEIProvider"
+            ],
+            "aliases": {
+                "IMEI": "\\IMEI\\IMEIFacade"
+            }
+        }
+    }
+}
