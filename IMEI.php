@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Packages\IMEI;
+namespace Packages\IMEI;
 
 
 class IMEI
@@ -12,6 +12,10 @@ class IMEI
      * @return string
      */
     public function generateIMEI($code_country, $model){
+        if (strlen($code_country) != 2 || !is_numeric($code_country) && (int)$code_country != (float)$code_country )
+            return 'Country code must have exactly two numbers';
+        if (strlen($model) != 6 || !is_numeric($model) || (int)$model != (float)$model )
+            return 'Country code must have exactly six numbers';
         $result = $code_country . $model;
         for ($i = 0; $i < 6; $i++){
             $n = rand(0,9);

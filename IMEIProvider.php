@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Packages\IMEI;
+namespace Packages\IMEI;
 
 
 use Illuminate\Support\ServiceProvider;
