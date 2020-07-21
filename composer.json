@@ -14,5 +14,15 @@
         "psr-4": {
             "Packages\\IMEI\\": ""
         }
+    },
+    "extra": {
+        "laravel": {
+            "provides": [
+                "Packages\\IMEI\\IMEIProvider"
+            ],
+            "aliases": {
+                "IMEI": "Packages\\IMEI\\IMEIFacade"
+            }
+        }
     }
 }
