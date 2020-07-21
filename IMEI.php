@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Packages\IMEI;
+namespace IMEI;
 
 
 class IMEI

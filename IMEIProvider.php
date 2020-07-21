@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Packages\IMEI;
+namespace IMEI;
 
 
 use Illuminate\Support\ServiceProvider;

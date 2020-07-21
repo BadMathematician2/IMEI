@@ -15,10 +15,10 @@
     "extra": {
         "laravel": {
             "provides": [
-                "Packages\\IMEI\\IMEIProvider"
+                "IMEI\\IMEIProvider"
             ],
             "aliases": {
-                "IMEI": "Packages\\IMEI\\IMEIFacade"
+                "IMEI": "IMEI\\IMEIFacade"
             }
         }
     }
