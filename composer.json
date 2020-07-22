@@ -14,7 +14,7 @@
     },
     "extra": {
         "laravel": {
-            "provides": [
+            "providers": [
                 "IMEI\\IMEIProvider"
             ],
             "aliases": {
