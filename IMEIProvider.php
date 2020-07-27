@@ -14,4 +14,9 @@ class IMEIProvider extends ServiceProvider
             return $this->app->make(IMEI::class);
         });
     }
+
+    public function boot()
+    {
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
+    }
 }
