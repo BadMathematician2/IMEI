@@ -4,6 +4,8 @@
 namespace IMEI;
 
 
+use IMEI\Models\Phone;
+
 class IMEI
 {
     /**
@@ -17,9 +19,8 @@ class IMEI
         if (strlen($model) != 6 || !is_numeric($model) || (int)$model != (float)$model )
             return 'Country code must have exactly six numbers';
         $result = $code_country . $model;
-
         try {
-            $n = \App\Packages\IMEI\Models\Imei::query()->where('TAC',$code_country.$model)->latest('amount')->get()[0]->amount;
+            $n = Phone::query()->where('TAC',$code_country.$model)->latest('amount')->get()[0]->amount;
             $result = $result . (string)(999999 - $n);
             $c = $this->controlNumber($result);
             $result = $result .  $this->controlNumber($result);
@@ -29,7 +30,7 @@ class IMEI
             $result = $result . '999999' ;
             $result = $result . $this->controlNumber($result);
         }
-        \App\Packages\IMEI\Models\Imei::query()->create([
+        Phone::query()->create([
             'TAC' => $code_country . $model,
             'CC' => substr($result, 8, 6),
             'D' => $result[14],

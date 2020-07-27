@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Packages\IMEI\Models;
+namespace IMEI\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Imei extends Model
+class Phone extends Model
 {
     protected $table = 'imeis';
 
