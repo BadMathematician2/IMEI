@@ -21,12 +21,16 @@ class IMEI
         $result = $code_country . $model;
         try {
             $exists = Phone::query()->where('TAC',$code_country.$model)->get();
+            if (sizeof($exists) >= 1000000)
+                return 'All possible IMEI with such code country and model already exist in table';
+            $k = 0;
             do {
+                $k++;
                 $CC = '';
                 for ($i = 0; $i < 6; $i++)
                     $CC = $CC . rand(0, 9);
             }
-            while ($this->isInArray($exists,$CC));
+            while ($this->isInArray($exists,$CC)&&$k<1000000);
             $result = $result . $CC;
             $result = $result .  $this->controlNumber($result);
         }
@@ -68,6 +72,11 @@ class IMEI
             return 9*$sum%10;
     }
 
+    /**
+     * @param $exists
+     * @param string $CC
+     * @return bool
+     */
     private function isInArray($exists, $CC)
     {
         $result = false;
