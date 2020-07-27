@@ -4,25 +4,29 @@
 namespace IMEI;
 
 
+use App\Packages\IMEI\src\Exceptions\AmountOfIMEIException;
+use App\Packages\IMEI\src\Exceptions\InvalidCodeException;
 use IMEI\Models\Phone;
 
 class IMEI
 {
     /**
-     * @param string $code_country
-     * @param string $model
+     * @param string $code
      * @return string
+     * @throws InvalidCodeException
      */
-    public function generateIMEI($code_country, $model){
-        if (strlen($code_country) != 2 || !is_numeric($code_country) && (int)$code_country != (float)$code_country )
-            return 'Country code must have exactly two numbers';
-        if (strlen($model) != 6 || !is_numeric($model) || (int)$model != (float)$model )
-            return 'Country code must have exactly six numbers';
-        $result = $code_country . $model;
+    public function generateIMEI($code){
+        if (!$this->checkCode($code))
+        {
+            throw new InvalidCodeException('Invalid code. It must be eight whole numbers');
+        }
+        $result = $code;
         try {
-            $exists = Phone::query()->where('TAC',$code_country.$model)->get();
-            if (sizeof($exists) >= 1000000)
-                return 'All possible IMEI with such code country and model already exist in table';
+            $exists = Phone::query()->where('TAC',$code)->get();
+
+            if (!$this->checkSize($exists))
+                throw new AmountOfIMEIException('In base all possible IMEIs already exist.');
+
             $k = 0;
             do {
                 $k++;
@@ -31,8 +35,8 @@ class IMEI
                     $CC = $CC . rand(0, 9);
             }
             while ($this->isInArray($exists,$CC)&&$k<1000000);
-            $result = $result . $CC;
-            $result = $result .  $this->controlNumber($result);
+
+            $result = $result .  $this->controlNumber($result . $CC);
         }
         catch (\Exception $exception){
             $CC = '';
@@ -41,13 +45,40 @@ class IMEI
             $result = $result . $CC;
             $result = $result . $this->controlNumber($result);
         }
+
         Phone::query()->create([
-            'TAC' => $code_country . $model,
+            'TAC' => $code,
             'CC' => substr($result, 8, 6),
             'D' => $result[14]
         ]);
 
         return $result;
+    }
+
+    /**
+     * @param string $code
+     * @return bool
+     */
+    private function checkCode($code)
+    {
+        if (strlen($code) != 8 || ((float)$code!=(int)$code) )
+            return false;
+        else return true;
+    }
+
+    /**
+     * @param array $exists
+     * @return bool
+     */
+    private function checkSize($exists)
+    {
+        if (sizeof($exists) < 1000000)
+            return false;
+        else return true;
+    }
+    public function resetTable()
+    {
+        Phone::query()->delete();
     }
 
     /**
