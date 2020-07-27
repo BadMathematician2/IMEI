@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Phone extends Model
 {
-    protected $table = 'imeis';
+    protected $table = 'table_imeis';
 
     protected $guarded = ['id'];
 }

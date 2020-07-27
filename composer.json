@@ -10,7 +10,7 @@
     "autoload": {
         "psr-4": {
             "IMEI\\": "",
-            "IMEI\\Models\\": "Models"
+            "IMEI\\Models\\": "src/Models"
         }
     },
     "extra": {

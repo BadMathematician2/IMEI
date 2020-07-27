@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImeisTable extends Migration
+class CreateTableImeis extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateImeisTable extends Migration
      */
     public function up()
     {
-        Schema::create('imeis', function (Blueprint $table) {
+        Schema::create('table_imeis', function (Blueprint $table) {
             $table->id();
             $table->string('TAC');
             $table->string('CC');
@@ -29,6 +29,6 @@ class CreateImeisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('imeis');
+        Schema::dropIfExists('table_imeis');
     }
 }

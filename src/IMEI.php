@@ -20,21 +20,27 @@ class IMEI
             return 'Country code must have exactly six numbers';
         $result = $code_country . $model;
         try {
-            $n = Phone::query()->where('TAC',$code_country.$model)->latest('amount')->get()[0]->amount;
-            $result = $result . (string)(999999 - $n);
-            $c = $this->controlNumber($result);
+            $exists = Phone::query()->where('TAC',$code_country.$model)->get();
+            do {
+                $CC = '';
+                for ($i = 0; $i < 6; $i++)
+                    $CC = $CC . rand(0, 9);
+            }
+            while ($this->isInArray($exists,$CC));
+            $result = $result . $CC;
             $result = $result .  $this->controlNumber($result);
         }
         catch (\Exception $exception){
-            $n = 0;
-            $result = $result . '999999' ;
+            $CC = '';
+            for ($i = 0; $i < 6; $i++)
+                $CC = $CC . rand(0, 9);
+            $result = $result . $CC;
             $result = $result . $this->controlNumber($result);
         }
         Phone::query()->create([
             'TAC' => $code_country . $model,
             'CC' => substr($result, 8, 6),
-            'D' => $result[14],
-            'amount' => $n + 1
+            'D' => $result[14]
         ]);
 
         return $result;
@@ -62,4 +68,14 @@ class IMEI
             return 9*$sum%10;
     }
 
+    private function isInArray($exists, $CC)
+    {
+        $result = false;
+        foreach ($exists as $exist)
+            if ($exist->CC == $CC){
+                $result = true;
+                break;
+            }
+        return $result;
+    }
 }
