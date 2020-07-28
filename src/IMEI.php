@@ -40,8 +40,9 @@ class IMEI
         }
         catch (\Exception $exception){
             $CC = '';
-            for ($i = 0; $i < 6; $i++)
+            for ($i = 0; $i < 6; $i++) {
                 $CC = $CC . rand(0, 9);
+            }
             $result = $result . $CC;
             $result = $result . $this->controlNumber($result);
         }
